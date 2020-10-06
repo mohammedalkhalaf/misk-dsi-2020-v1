@@ -1,3 +1,8 @@
+
+
+  git config --global user.email "mohammedalieisa@gmail.com"
+  git config --global user.name "mohammedalkhalaf"
+
 # misk-dsi-2020-v1
 first test at git and GitHub 
 
