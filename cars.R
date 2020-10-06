@@ -8,6 +8,6 @@ cars <- mtcars
 
 summary(cars)
 
-# love youself 
-#hi there, it is a new update here 
-# just to tset pushing in git
+# love yourself 
+# hi there, it is a new update here 
+# just to test pushing in git
