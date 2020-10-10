@@ -54,11 +54,11 @@ indian_food %>%
 
 # what is the most common course type?
 
-tail(names(sort(table(indian_food_tidy$course))), 1)
+tail(names(sort(table(indian_food$course))), 1)
 
 # what is the most common flavor profile?
 
-tail(names(sort(table(indian_food_tidy$flavor_profile))), 1)
+tail(names(sort(table(indian_food$flavor_profile))), 1)
 
 #what is the most common ingredients in a course type?
 
@@ -75,13 +75,13 @@ indian_food_tidy %>%
 #what is the most common course in a state/region?
 # state
 
-indian_food_tidy %>% 
+indian_food %>% 
   group_by(state) %>%
   summarise( tail(names(sort(table(course))), 1))
 
 # region
 
-indian_food_tidy %>% 
+indian_food %>% # there is a region with no value how we can remove it 
   group_by(region) %>%
   summarise( tail(names(sort(table(course))), 1))
 
@@ -101,26 +101,26 @@ indian_food_tidy %>%
 #what is the most common flavor type in a state/region?
 # state
 
-indian_food_tidy %>% 
+indian_food %>% 
   group_by(state) %>%
   summarise( tail(names(sort(table(flavor_profile))), 1))
 
 # region
 
-indian_food_tidy %>% 
+indian_food %>% 
   group_by(region) %>%
   summarise( tail(names(sort(table(flavor_profile))), 1))
 
 #what is the most common diet in a state/region?
 # state
 
-indian_food_tidy %>% 
+indian_food %>% 
   group_by(state) %>%
   summarise( tail(names(sort(table(diet))), 1))
 
 # reigon
 
-indian_food_tidy %>% 
+indian_food %>% 
   group_by(region) %>%
   summarise( tail(names(sort(table(diet))), 1))
 
@@ -152,4 +152,8 @@ indian_food %>%
 indian_food %>% 
   group_by(region) %>% 
   summarise(avg = mean(cook_time, na.rm = TRUE))
+
+# the region which has the highest number of dishes 
+
+tail(names(sort(table(indian_food$region))), 1)
 
