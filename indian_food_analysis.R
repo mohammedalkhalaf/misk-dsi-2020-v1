@@ -63,9 +63,8 @@ tail(names(sort(table(indian_food_tidy$flavor_profile))), 1)
 #what is the most common ingredients in a course type?
 
 indian_food_tidy %>% 
-  group_by(course) %>% 
-  summarise( slice_max(ingredients,1))
-  
+  group_by(course) %>%
+  summarise( mode(ingredients) )  # mode not working here 
 
 #what is the most common ingredients in a flavor type?
 
@@ -76,7 +75,7 @@ indian_food_tidy %>%
 
 
 
-# reigon
+# region
 
 
 
@@ -85,7 +84,7 @@ indian_food_tidy %>%
 
 
 
-# reigon
+# region
 
 
 
@@ -94,7 +93,7 @@ indian_food_tidy %>%
 
 
 
-# reigon
+# region
 
 
 
