@@ -13,9 +13,15 @@ indian_food_tidy <-  indian_food %>%
    mutate(ingredients = strsplit(as.character(ingredients), ", ")) %>% 
    unnest(ingredients)
 
+# removing -1 values from the data into NA values 
+
+
+indian_food[ indian_food == -1 ] <- NA # removing -1 values into NA in both tables
+indian_food_tidy[ indian_food_tidy == -1 ] <- NA # removing -1 values into NA
+
 # what is the most common diet in indian food?
 
-tail(names(sort(table(indian_food$diet))), 1)
+tail(names(sort(table(indian_food$diet))), 1) # i found this online i have no idea how it works 
 
 # what is the most common ingredients?
 
@@ -23,43 +29,43 @@ tail(names(sort(table(indian_food_tidy$ingredients))), 1)
 
 # what is the average perp time?
 
-indian_food[ indian_food == -1 ] <- NA # removing -1 values into NA in both tables
-indian_food_tidy[ indian_food_tidy == -1 ] <- NA # removing -1 values into NA
-
-mean(indian_food$prep_time , na.rm = TRUE)
-
-# why the following not working?
-#indian_food %>% 
-#  mean(prep_time , na.rm = TRUE)
+indian_food %>% 
+  summarise(avg =mean(prep_time , na.rm = TRUE)) # why it did not work without summarise ??
 
 # what is the average cooking time?
 
-mean(indian_food$cook_time , na.rm = TRUE)
+indian_food %>% 
+  summarise( avg = mean( cook_time , na.rm = TRUE ))
 
 # average cooking time total time (perp+cook)
 
-mean(indian_food$cook_time , na.rm = TRUE) + mean(indian_food$prep_time , na.rm = TRUE)
+indian_food %>% 
+  summarise( avg = mean( cook_time , na.rm = TRUE ) + mean(prep_time , na.rm = TRUE) )
 
 # range of prep time 
 
-#indian_food %>% #pipe is not working!!!
-range( indian_food$prep_time, na.rm = TRUE)
+indian_food %>% 
+  summarise( range(prep_time, na.rm = TRUE)) # what is the difference if i assigned it to variable such as r=
 
 # range of cooking time
 
-range( indian_food$cook_time, na.rm = TRUE)
+indian_food %>% 
+  summarise( range(cook_time, na.rm = TRUE))
 
 # what is the most common course type?
 
-
+tail(names(sort(table(indian_food_tidy$course))), 1)
 
 # what is the most common flavor profile?
 
-
+tail(names(sort(table(indian_food_tidy$flavor_profile))), 1)
 
 #what is the most common ingredients in a course type?
 
-
+indian_food_tidy %>% 
+  group_by(course) %>% 
+  summarise( slice_max(ingredients,1))
+  
 
 #what is the most common ingredients in a flavor type?
 
@@ -70,7 +76,7 @@ range( indian_food$cook_time, na.rm = TRUE)
 
 
 
-# reign
+# reigon
 
 
 
@@ -79,16 +85,16 @@ range( indian_food$cook_time, na.rm = TRUE)
 
 
 
-# reign
+# reigon
 
 
 
-#what is the most common flavor in a state/region?
+#what is the most common flavor type in a state/region?
 # state
 
 
 
-# reign
+# reigon
 
 
 
@@ -97,24 +103,36 @@ range( indian_food$cook_time, na.rm = TRUE)
 
 
 
-# reign
+# reigon
 
 
 
 #what is the average prep time / cooking time in a state/region?
-# time / state
+# prep time / state
 
-
+indian_food %>% 
+  group_by(state) %>% 
+  summarise(avg = mean(prep_time, na.rm = TRUE))# %>% 
+# slice_max(1) # if i want to find the top but it is not working 
 
 # prep time / region
 
+indian_food %>% 
+  group_by(region) %>% 
+  summarise(avg = mean(prep_time, na.rm = TRUE)) # %>% 
+  #slice_max(1) # to find the min but it is not working too 
 
 
 # cooking time / state 
 
+indian_food %>% 
+  group_by(state) %>% 
+  summarise(avg = mean(cook_time, na.rm = TRUE))
 
 
 # cooking time / region
 
-
+indian_food %>% 
+  group_by(region) %>% 
+  summarise(avg = mean(cook_time, na.rm = TRUE))
 
