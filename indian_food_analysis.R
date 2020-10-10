@@ -64,47 +64,65 @@ tail(names(sort(table(indian_food_tidy$flavor_profile))), 1)
 
 indian_food_tidy %>% 
   group_by(course) %>%
-  summarise( mode(ingredients) )  # mode not working here 
+ summarise( tail(names(sort(table(ingredients))), 1))  # mode not working here 
 
 #what is the most common ingredients in a flavor type?
 
-
+indian_food_tidy %>% 
+  group_by(flavor_profile) %>%
+  summarise( tail(names(sort(table(ingredients))), 1))
 
 #what is the most common course in a state/region?
 # state
 
-
+indian_food_tidy %>% 
+  group_by(state) %>%
+  summarise( tail(names(sort(table(course))), 1))
 
 # region
 
-
+indian_food_tidy %>% 
+  group_by(region) %>%
+  summarise( tail(names(sort(table(course))), 1))
 
 #what is the most common ingredients in a state/region?
 # state
 
-
+indian_food_tidy %>% 
+  group_by(state) %>%
+  summarise( tail(names(sort(table(ingredients))), 1))
 
 # region
 
-
+indian_food_tidy %>% 
+  group_by(region) %>%
+  summarise( tail(names(sort(table(ingredients))), 1))
 
 #what is the most common flavor type in a state/region?
 # state
 
-
+indian_food_tidy %>% 
+  group_by(state) %>%
+  summarise( tail(names(sort(table(flavor_profile))), 1))
 
 # region
 
+indian_food_tidy %>% 
+  group_by(region) %>%
+  summarise( tail(names(sort(table(flavor_profile))), 1))
 
-
-#what is the most common course in a state/region?
+#what is the most common diet in a state/region?
 # state
 
-
+indian_food_tidy %>% 
+  group_by(state) %>%
+  summarise( tail(names(sort(table(diet))), 1))
 
 # reigon
 
-
+indian_food_tidy %>% 
+  group_by(region) %>%
+  summarise( tail(names(sort(table(diet))), 1))
 
 #what is the average prep time / cooking time in a state/region?
 # prep time / state
