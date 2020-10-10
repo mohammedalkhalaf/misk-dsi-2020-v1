@@ -1,7 +1,18 @@
-# Indian food analysis 
-# Mohammed Alkhalaf
-# 10.10.2020
-# DSI Misk class 2020 
+---
+title: "Indian Food Analysis"
+output: html_document
+---
+
+```{r,echo=FALSE, message=FALSE}
+library(knitr)
+library(tidyverse)
+library(DT)
+options(knitr.table.format = "html")
+```
+
+
+
+```{r}
 
 library(tidyverse)
 
@@ -13,24 +24,29 @@ indian_food_tidy <-  indian_food %>% # this will only be used to analyze any ing
    mutate(ingredients = strsplit(as.character(ingredients), ", ")) %>% 
    unnest(ingredients)
 
+
 # removing -1 values from the data into NA values 
 
 
 indian_food[ indian_food == -1 ] <- NA # removing -1 values into NA in both tables
 indian_food_tidy[ indian_food_tidy == -1 ] <- NA # removing -1 values into NA
 
-# what is the most common diet in indian food?
-
-tail(names(sort(table(indian_food$diet))), 1) # i found this online i have no idea how it works 
-
-# what is the most common ingredients?
-
+```
+ \ # what is the most common diet in indian food? \
+```{r}
+tail(names(sort(table(indian_food$diet))), 1) # i found this online i have no idea how it works
+```
+\ # what is the most common ingredients? \
+```{r}
 tail(names(sort(table(indian_food_tidy$ingredients))), 1)
-
-# what is the average perp time?
-
+```
+\ # what is the average perp time? \
+```{r}
 indian_food %>% 
   summarise(avg_prep_time =mean(prep_time , na.rm = TRUE)) # why it did not work without summarise ??
+```
+
+
 
 # what is the average cooking time?
 
