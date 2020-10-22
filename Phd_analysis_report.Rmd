@@ -48,7 +48,10 @@ phd_new3 <- phd_field %>% #preparing the values to be ploted
 
 phd_new3 <- phd_new3 %>% 
   mutate(per_change = ((total - lag(total))/lag(total)*100))
-         
+
+# alternatively:
+(phd_new3$total/lag(phd_new3$total)) *100
+
 phd_new3 %>% 
   datatable()
 ```
