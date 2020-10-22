@@ -4,6 +4,7 @@
 # DSI Misk class 2020 
 
 library(tidyverse)
+library(ggplot2)
 
 indian_food <- read.csv("indian_food.csv")
 
@@ -157,4 +158,13 @@ indian_food %>%
 
 tail(names(sort(table(indian_food$region))), 1)
 
+# the state which has the highest number of dishes 
 
+tail(names(sort(table(indian_food$state))), 1)
+
+indian_food %>% 
+  ggplot(aes(x= prep_time, y=cook_time))+ 
+  geom_point()+
+  theme(aspect.ratio = 1,
+        axis.line = element_blank())+
+  coord_cartesian(xlim = c(0,300), ylim = c(0,125), expand = 0, clip = "off")

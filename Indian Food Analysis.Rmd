@@ -3,14 +3,14 @@ title: "Indian Food Analysis"
 output: html_document
 ---
 
-```{r,echo=FALSE, message=FALSE}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
 library(knitr)
 library(tidyverse)
 library(DT)
 options(knitr.table.format = "html")
 ```
-
-
 
 ```{r}
 
@@ -32,145 +32,229 @@ indian_food[ indian_food == -1 ] <- NA # removing -1 values into NA in both tabl
 indian_food_tidy[ indian_food_tidy == -1 ] <- NA # removing -1 values into NA
 
 ```
- \ # what is the most common diet in indian food? \
+\# what is the most common diet in indian food? \
 ```{r}
 tail(names(sort(table(indian_food$diet))), 1) # i found this online i have no idea how it works
 ```
-\ # what is the most common ingredients? \
+\# what is the most common ingredients? \
 ```{r}
 tail(names(sort(table(indian_food_tidy$ingredients))), 1)
 ```
-\ # what is the average perp time? \
+\# what is the average perp time? \
 ```{r}
 indian_food %>% 
   summarise(avg_prep_time =mean(prep_time , na.rm = TRUE)) # why it did not work without summarise ??
 ```
-
-
-
-# what is the average cooking time?
-
+\# what is the average cooking time? \
+```{r}
 indian_food %>% 
   summarise( avg_cook_time = mean( cook_time , na.rm = TRUE ))
-
-# average cooking time total time (perp+cook)
-
+```
+\# average cooking time total time (perp+cook)\
+```{r}
 indian_food %>% 
   summarise( avg_total_cooking_time = mean( cook_time , na.rm = TRUE ) + mean(prep_time , na.rm = TRUE) )
+```
+\# range of prep time\ 
 
-# range of prep time 
-
+```{r}
 indian_food %>% 
-  summarise(range_prep_time = range(prep_time, na.rm = TRUE)) # what is the difference if i assigned it to variable such as r=
+  summarise(range_prep_time = range(prep_time, na.rm = TRUE))%>% 
+  datatable() # what is the difference if i assigned it to variable such as r=
+```
 
-# range of cooking time
 
+\# range of cooking time\
+
+```{r}
 indian_food %>% 
-  summarise(range_cook_time =range(cook_time, na.rm = TRUE))
+  summarise(range_cook_time =range(cook_time, na.rm = TRUE))%>% 
+  datatable()
+```
 
-# what is the most common course type?
 
+\# what is the most common course type?\
+
+```{r}
 tail(names(sort(table(indian_food$course))), 1)
+```
 
-# what is the most common flavor profile?
 
+\# what is the most common flavor profile?\
+
+```{r}
 tail(names(sort(table(indian_food$flavor_profile))), 1)
+```
 
-#what is the most common ingredients in a course type?
 
+\#what is the most common ingredients in a course type?\
+
+```{r}
 indian_food_tidy %>% 
   group_by(course) %>%
- summarise( tail(names(sort(table(ingredients))), 1))  # mode not working here 
+ summarise( tail(names(sort(table(ingredients))), 1)) %>% 
+  datatable() # mode not working here
+```
+ 
 
-#what is the most common ingredients in a flavor type?
+\#what is the most common ingredients in a flavor type?\
 
+```{r}
 indian_food_tidy %>% 
   group_by(flavor_profile) %>%
-  summarise( tail(names(sort(table(ingredients))), 1))
+  summarise( tail(names(sort(table(ingredients))), 1))%>% 
+  datatable()
+```
 
-#what is the most common course in a state/region?
-# state
 
+\#what is the most common course in a state/region?\
+\# state\
+
+```{r}
 indian_food %>% 
   group_by(state) %>%
-  summarise( tail(names(sort(table(course))), 1))
+  summarise( tail(names(sort(table(course))), 1))%>% 
+  datatable()
+```
 
-# region
 
+\# region\
+
+```{r}
 indian_food %>% # there is a region with no value how we can remove it 
   group_by(region) %>%
-  summarise( tail(names(sort(table(course))), 1))
+  summarise( tail(names(sort(table(course))), 1))%>% 
+  datatable()
+```
 
-#what is the most common ingredients in a state/region?
-# state
 
+\#what is the most common ingredients in a state/region?\
+\# state\
+
+```{r}
 indian_food_tidy %>% 
   group_by(state) %>%
-  summarise( tail(names(sort(table(ingredients))), 1))
+  summarise( tail(names(sort(table(ingredients))), 1))%>% 
+  datatable()
+```
 
-# region
 
+\# region\
+
+```{r}
 indian_food_tidy %>% 
   group_by(region) %>%
-  summarise( tail(names(sort(table(ingredients))), 1))
+  summarise( tail(names(sort(table(ingredients))), 1))%>% 
+  datatable()
+```
 
-#what is the most common flavor type in a state/region?
-# state
 
+\#what is the most common flavor type in a state/region?\
+\# state\
+
+```{r}
 indian_food %>% 
   group_by(state) %>%
-  summarise( tail(names(sort(table(flavor_profile))), 1))
+  summarise( tail(names(sort(table(flavor_profile))), 1))%>% 
+  datatable()
+```
 
-# region
 
+\# region\
+
+```{r}
 indian_food %>% 
   group_by(region) %>%
-  summarise( tail(names(sort(table(flavor_profile))), 1))
+  summarise( tail(names(sort(table(flavor_profile))), 1))%>% 
+  datatable()
+```
 
-#what is the most common diet in a state/region?
-# state
 
+\#what is the most common diet in a state/region?\
+\# state\
+
+```{r}
 indian_food %>% 
   group_by(state) %>%
-  summarise(s1= tail(names(sort(table(diet))), 1))
+  summarise(s1= tail(names(sort(table(diet))), 1))%>% 
+  datatable()
+```
 
-# reigon
 
+\# reigon\
+
+```{r}
 indian_food %>% 
   group_by(region) %>%
-  summarise( tail(names(sort(table(diet))), 1))
+  summarise( tail(names(sort(table(diet))), 1))%>% 
+  datatable()
+```
 
-#what is the average prep time / cooking time in a state/region?
-# prep time / state
 
+\#what is the average prep time / cooking time in a state/region?\
+\# prep time / state\
+
+```{r}
 indian_food %>% 
   group_by(state) %>% 
   summarise(avg = mean(prep_time, na.rm = TRUE)) %>% 
-slice_max(1) # if i want to find the top but it is not working 
+  datatable()#%>% 
+#slice_max(1) # if i want to find the top but it is not working
+```
+ 
 
-# prep time / region
+\# prep time / region\
 
+```{r}
 indian_food %>% 
   group_by(region) %>% 
-  summarise(avg = mean(prep_time, na.rm = TRUE)) # %>% 
-  #slice_max(1) # to find the min but it is not working too 
+  summarise(avg = mean(prep_time, na.rm = TRUE)) %>% 
+  datatable()# %>% 
+  #slice_max(1) # to find the min but it is not working too
+```
+ 
 
+\# cooking time / state \
 
-# cooking time / state 
-
+```{r}
 indian_food %>% 
   group_by(state) %>% 
-  summarise(avg = mean(cook_time, na.rm = TRUE))
+  summarise(avg = mean(cook_time, na.rm = TRUE)) %>% 
+datatable()
+```
 
 
-# cooking time / region
+\# cooking time / region\
 
+```{r}
 indian_food %>% 
   group_by(region) %>% 
-  summarise(avg = mean(cook_time, na.rm = TRUE))
+  summarise(avg = mean(cook_time, na.rm = TRUE))%>% 
+  datatable()
+```
 
-# the region which has the highest number of dishes 
 
+\# the region which has the highest number of dishes \
+
+```{r}
 tail(names(sort(table(indian_food$region))), 1)
+```
 
+\# the state which has the highest number of dishes\ 
+
+```{r}
+tail(names(sort(table(indian_food$state))), 1)
+
+```
+
+\# points plots describing cooking time by prep time\
+
+```{r}
+indian_food %>% 
+  ggplot(aes(x= prep_time, y=cook_time))+ 
+  geom_point()+
+  theme(aspect.ratio = 1,
+        axis.line = element_blank())+
+  coord_cartesian(xlim = c(0,300), ylim = c(0,125), expand = 0, clip = "off")
+```
 
