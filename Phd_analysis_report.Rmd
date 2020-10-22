@@ -30,6 +30,38 @@ phd_field %>%
   summarise(sum(n_phds,na.rm = TRUE), .groups = 'drop') %>% 
   datatable()
 ```
+\# change of Total Number of PHDs by Year\ 
+
+```{r}
+phd_new3 <- phd_field %>% #preparing the values to be ploted 
+  group_by(year) %>% 
+  summarise(total = sum(n_phds,na.rm = TRUE), .groups = 'drop')
+
+phd_new3 <- phd_new3 %>% 
+  mutate(per_change = ((total - lag(total))/lag(total)*100))
+         
+phd_new3 %>% 
+  datatable()
+```
+\#line plot\
+
+```{r}
+phd_new3 %>% 
+  ggplot(aes(x=year,y=per_change))+ geom_line() +
+  labs(title = "Percentage of change", 
+       x = "Year",
+       y = "Percentage of change") +
+  theme_classic(10) +
+  theme(rect = element_blank(),
+        aspect.ratio = 1)+
+  scale_color_brewer(palette = "Dark2") +
+  scale_y_continuous(limits = c(-5,5),
+                     breaks = seq(-5, 5, 1),
+                     expand = c(0,0))+ 
+  scale_x_continuous( limits=c(2008, 2017),
+                      breaks = seq(2009, 2018, 1))+
+  grids(linetype = "dashed")
+```
 
 
 \# Total Number of PHDs by the broad field\
@@ -78,12 +110,13 @@ phd_field %>%
 ```{r}
 phd_new <- phd_field %>% #preparing the values to be ploted 
   group_by(broad_field,year) %>% 
-  summarise(total = sum(n_phds,na.rm = TRUE))
-phd_new$broad_year <- paste(phd_new$broad_field, "-", phd_new$year)
-
+  summarise(total = sum(n_phds,na.rm = TRUE), .groups = 'drop')
 phd_new <- phd_new %>% 
   group_by(broad_field) %>% 
   mutate(per_change = ((total - lag(total))/lag(total)*100))
+
+phd_new %>% 
+  datatable()
 ```
 
 
@@ -126,6 +159,20 @@ phd_new %>%
                       breaks = seq(2009, 2018, 1))+
   grids(linetype = "dashed")
 
+```
+
+\# Percentage change in number of Phds by major field\ 
+
+```{r}
+phd_new2 <- phd_field %>% #preparing the values to be ploted 
+  group_by(major_field,year) %>% 
+  summarise(total = sum(n_phds,na.rm = TRUE), .groups = 'drop')
+phd_new2 <- phd_new2 %>% 
+  group_by(major_field) %>% 
+  mutate(per_change = ((total - lag(total))/lag(total)*100))
+
+phd_new2 %>% 
+  datatable()
 ```
 
 
