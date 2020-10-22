@@ -30,7 +30,7 @@ indian_food_tidy <-  indian_food %>% # this will only be used to analyze any ing
 
 indian_food[ indian_food == -1 ] <- NA # removing -1 values into NA in both tables
 indian_food_tidy[ indian_food_tidy == -1 ] <- NA # removing -1 values into NA
-
+indian_food[ indian_food == "" ] <- NA
 ```
 \# what is the most common diet in indian food? \
 ```{r}
@@ -43,23 +43,23 @@ tail(names(sort(table(indian_food_tidy$ingredients))), 1)
 \# what is the average perp time? \
 ```{r}
 indian_food %>% 
-  summarise(avg_prep_time =mean(prep_time , na.rm = TRUE)) # why it did not work without summarise ??
+  summarise(avg_prep_time =mean(prep_time , na.rm = TRUE), .groups = 'drop') # why it did not work without summarise ??
 ```
 \# what is the average cooking time? \
 ```{r}
 indian_food %>% 
-  summarise( avg_cook_time = mean( cook_time , na.rm = TRUE ))
+  summarise( avg_cook_time = mean( cook_time , na.rm = TRUE ), .groups = 'drop')
 ```
 \# average cooking time total time (perp+cook)\
 ```{r}
 indian_food %>% 
-  summarise( avg_total_cooking_time = mean( cook_time , na.rm = TRUE ) + mean(prep_time , na.rm = TRUE) )
+  summarise( avg_total_cooking_time = mean( cook_time , na.rm = TRUE ) + mean(prep_time , na.rm = TRUE) , .groups = 'drop')
 ```
 \# range of prep time\ 
 
 ```{r}
 indian_food %>% 
-  summarise(range_prep_time = range(prep_time, na.rm = TRUE))%>% 
+  summarise(range_prep_time = range(prep_time, na.rm = TRUE), .groups = 'drop')%>% 
   datatable() # what is the difference if i assigned it to variable such as r=
 ```
 
@@ -68,7 +68,7 @@ indian_food %>%
 
 ```{r}
 indian_food %>% 
-  summarise(range_cook_time =range(cook_time, na.rm = TRUE))%>% 
+  summarise(range_cook_time =range(cook_time, na.rm = TRUE), .groups = 'drop')%>% 
   datatable()
 ```
 
@@ -92,7 +92,7 @@ tail(names(sort(table(indian_food$flavor_profile))), 1)
 ```{r}
 indian_food_tidy %>% 
   group_by(course) %>%
- summarise( tail(names(sort(table(ingredients))), 1)) %>% 
+ summarise(tail(names(sort(table(ingredients))), 1), .groups = 'drop') %>% 
   datatable() # mode not working here
 ```
  
@@ -102,7 +102,8 @@ indian_food_tidy %>%
 ```{r}
 indian_food_tidy %>% 
   group_by(flavor_profile) %>%
-  summarise( tail(names(sort(table(ingredients))), 1))%>% 
+  summarise( tail(names(sort(table(ingredients))), 1), .groups = 'drop')%>% 
+  na.omit(flavor_profile) %>% 
   datatable()
 ```
 
@@ -113,7 +114,8 @@ indian_food_tidy %>%
 ```{r}
 indian_food %>% 
   group_by(state) %>%
-  summarise( tail(names(sort(table(course))), 1))%>% 
+  summarise( tail(names(sort(table(course))), 1), .groups = 'drop')%>% 
+  na.omit(state)%>% 
   datatable()
 ```
 
@@ -123,7 +125,8 @@ indian_food %>%
 ```{r}
 indian_food %>% # there is a region with no value how we can remove it 
   group_by(region) %>%
-  summarise( tail(names(sort(table(course))), 1))%>% 
+  summarise( tail(names(sort(table(course))), 1), .groups = 'drop') %>% 
+  na.omit(region) %>% 
   datatable()
 ```
 
@@ -134,7 +137,8 @@ indian_food %>% # there is a region with no value how we can remove it
 ```{r}
 indian_food_tidy %>% 
   group_by(state) %>%
-  summarise( tail(names(sort(table(ingredients))), 1))%>% 
+  summarise( tail(names(sort(table(ingredients))), 1), .groups = 'drop')%>% 
+  na.omit(state)%>% 
   datatable()
 ```
 
@@ -144,7 +148,8 @@ indian_food_tidy %>%
 ```{r}
 indian_food_tidy %>% 
   group_by(region) %>%
-  summarise( tail(names(sort(table(ingredients))), 1))%>% 
+  summarise( tail(names(sort(table(ingredients))), 1), .groups = 'drop')%>% 
+  na.omit(region)%>% 
   datatable()
 ```
 
@@ -155,7 +160,8 @@ indian_food_tidy %>%
 ```{r}
 indian_food %>% 
   group_by(state) %>%
-  summarise( tail(names(sort(table(flavor_profile))), 1))%>% 
+  summarise( tail(names(sort(table(flavor_profile))), 1), .groups = 'drop')%>% 
+  na.omit(state)%>% 
   datatable()
 ```
 
@@ -165,7 +171,8 @@ indian_food %>%
 ```{r}
 indian_food %>% 
   group_by(region) %>%
-  summarise( tail(names(sort(table(flavor_profile))), 1))%>% 
+  summarise( tail(names(sort(table(flavor_profile))), 1), .groups = 'drop')%>% 
+  na.omit(region)%>% 
   datatable()
 ```
 
@@ -176,7 +183,8 @@ indian_food %>%
 ```{r}
 indian_food %>% 
   group_by(state) %>%
-  summarise(s1= tail(names(sort(table(diet))), 1))%>% 
+  summarise(s1= tail(names(sort(table(diet))), 1), .groups = 'drop')%>% 
+  na.omit(state)%>% 
   datatable()
 ```
 
@@ -186,7 +194,8 @@ indian_food %>%
 ```{r}
 indian_food %>% 
   group_by(region) %>%
-  summarise( tail(names(sort(table(diet))), 1))%>% 
+  summarise( tail(names(sort(table(diet))), 1), .groups = 'drop')%>% 
+  na.omit(region)%>% 
   datatable()
 ```
 
@@ -197,7 +206,8 @@ indian_food %>%
 ```{r}
 indian_food %>% 
   group_by(state) %>% 
-  summarise(avg = mean(prep_time, na.rm = TRUE)) %>% 
+  summarise(avg = mean(prep_time, na.rm = TRUE), .groups = 'drop')%>% 
+  na.omit(state) %>% 
   datatable()#%>% 
 #slice_max(1) # if i want to find the top but it is not working
 ```
@@ -208,7 +218,8 @@ indian_food %>%
 ```{r}
 indian_food %>% 
   group_by(region) %>% 
-  summarise(avg = mean(prep_time, na.rm = TRUE)) %>% 
+  summarise(avg = mean(prep_time, na.rm = TRUE), .groups = 'drop')%>% 
+  na.omit(region) %>% 
   datatable()# %>% 
   #slice_max(1) # to find the min but it is not working too
 ```
@@ -219,7 +230,8 @@ indian_food %>%
 ```{r}
 indian_food %>% 
   group_by(state) %>% 
-  summarise(avg = mean(cook_time, na.rm = TRUE)) %>% 
+  summarise(avg = mean(cook_time, na.rm = TRUE), .groups = 'drop')%>% 
+  na.omit(state) %>% 
 datatable()
 ```
 
@@ -229,7 +241,8 @@ datatable()
 ```{r}
 indian_food %>% 
   group_by(region) %>% 
-  summarise(avg = mean(cook_time, na.rm = TRUE))%>% 
+  summarise(avg = mean(cook_time, na.rm = TRUE), .groups = 'drop')%>% 
+  na.omit(region)%>% 
   datatable()
 ```
 
