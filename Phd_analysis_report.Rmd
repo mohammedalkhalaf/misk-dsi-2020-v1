@@ -20,6 +20,14 @@ phd_field <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/
 
 ```
 
+[data source](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-02-19)
+
+## Research questions
+
+<What are the main research questions that you will address with this data set?>
+
+## Analysis
+
 \# Phds awarded in The USA analysis report 2008-2017\
 
 \# Total Number of PHDs by Year\ 
@@ -30,6 +38,7 @@ phd_field %>%
   summarise(sum(n_phds,na.rm = TRUE), .groups = 'drop') %>% 
   datatable()
 ```
+
 \# change of Total Number of PHDs by Year\ 
 
 ```{r}
@@ -43,7 +52,8 @@ phd_new3 <- phd_new3 %>%
 phd_new3 %>% 
   datatable()
 ```
-\#line plot\
+
+line plot of.... 
 
 ```{r}
 phd_new3 %>% 
@@ -75,6 +85,7 @@ phd_field %>%
 
 
 \# Total number of PHDs by the sub field \
+
 ```{r}
 phd_field %>% 
   group_by(major_field) %>% 
@@ -84,6 +95,7 @@ phd_field %>%
 
 
 \# Total Number of PHDs in a broad field by year\
+
 ```{r}
 phd_field %>%
   group_by(broad_field,year) %>% 
@@ -107,6 +119,7 @@ phd_field %>%
 
 
 \# Percentage change in number of Phds by broad field\ 
+
 ```{r}
 phd_new <- phd_field %>% #preparing the values to be ploted 
   group_by(broad_field,year) %>% 
@@ -121,6 +134,7 @@ phd_new %>%
 
 
 \# box plot\
+
 ```{r}
 phd_new %>% 
   group_by(broad_field) %>% 

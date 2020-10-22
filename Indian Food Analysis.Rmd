@@ -1,5 +1,6 @@
 ---
 title: "Indian Food Analysis"
+author: "my name"
 output: html_document
 ---
 
@@ -32,30 +33,61 @@ indian_food[ indian_food == -1 ] <- NA # removing -1 values into NA in both tabl
 indian_food_tidy[ indian_food_tidy == -1 ] <- NA # removing -1 values into NA
 indian_food[ indian_food == "" ] <- NA
 ```
-\# what is the most common diet in indian food? \
+
+## Description of the data
+
+This data set come from [kaggle](https://www.kaggle.com/nehaprabhavalkar/indian-food-101). It describes....
+
+## Research questions
+
+<What are the main research questions that you will address with this data set?>
+
+## Analysis
+
+What is the most common diet in Indian food?
+
 ```{r}
-tail(names(sort(table(indian_food$diet))), 1) # i found this online i have no idea how it works
+# tail(names(sort(table(indian_food$diet))), 1) # i found this online i have no idea how it works
+indian_food_common <- indian_food %>% 
+  group_by(diet) %>% 
+  count() %>%
+  arrange(-n) 
+
+common <- indian_food_common$diet[1]
+common_n <- indian_food_common$n[1]
+total_n <- nrow(indian_food)
 ```
-\# what is the most common ingredients? \
+
+In our data set, the most common kind of food is `r common` with `r common_n` out of `r total_n` dishes. 
+
+What is the most common ingredient?
+
 ```{r}
 tail(names(sort(table(indian_food_tidy$ingredients))), 1)
 ```
-\# what is the average perp time? \
+
+what is the average prep time?
+
 ```{r}
 indian_food %>% 
   summarise(avg_prep_time =mean(prep_time , na.rm = TRUE), .groups = 'drop') # why it did not work without summarise ??
 ```
-\# what is the average cooking time? \
+
+What is the average cooking time?
+
 ```{r}
 indian_food %>% 
   summarise( avg_cook_time = mean( cook_time , na.rm = TRUE ), .groups = 'drop')
 ```
-\# average cooking time total time (perp+cook)\
+
+What is the average cooking time total time (prep+cook)
+
 ```{r}
 indian_food %>% 
   summarise( avg_total_cooking_time = mean( cook_time , na.rm = TRUE ) + mean(prep_time , na.rm = TRUE) , .groups = 'drop')
 ```
-\# range of prep time\ 
+
+The range of prep time
 
 ```{r}
 indian_food %>% 
@@ -64,7 +96,7 @@ indian_food %>%
 ```
 
 
-\# range of cooking time\
+Range of cooking time
 
 ```{r}
 indian_food %>% 
@@ -73,7 +105,7 @@ indian_food %>%
 ```
 
 
-\# what is the most common course type?\
+what is the most common course type?
 
 ```{r}
 tail(names(sort(table(indian_food$course))), 1)
